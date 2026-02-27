@@ -1,0 +1,148 @@
+.header-root {
+  flex-grow: 1;
+}
+
+.header-appbar {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.header-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.logo-icon {
+  color: #ff5252 !important;
+  font-size: 28px;
+}
+
+.logo-text {
+  font-weight: 700 !important;
+  color: #333333 !important;
+  font-size: 1.25rem !important;
+}
+
+.search-paper {
+  flex: 1;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 24px !important;
+  background-color: #f5f5f5 !important;
+  box-shadow: none !important;
+  border: 1px solid #e0e0e0;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.search-icon {
+  color: #757575 !important;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 14px;
+}
+
+.search-input input {
+  padding: 8px 0;
+}
+
+.weather-widget {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #fff3e0;
+  border-radius: 8px;
+  min-width: 100px;
+}
+
+.weather-icon {
+  color: #ff9800 !important;
+  font-size: 24px;
+}
+
+.weather-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.weather-temp {
+  font-weight: 600;
+  color: #333;
+  line-height: 1.2;
+}
+
+.weather-desc {
+  color: #757575;
+  line-height: 1.2;
+}
+
+.category-chips {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px 16px;
+  flex-wrap: wrap;
+}
+
+.category-chip {
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.category-chip:hover {
+  transform: translateY(-1px);
+}
+
+.category-chip.active {
+  background-color: #ff5252 !important;
+  color: white !important;
+}
+
+@media (max-width: 768px) {
+  .header-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .logo-container {
+    justify-content: center;
+  }
+
+  .search-paper {
+    max-width: 100%;
+    order: 2;
+  }
+
+  .weather-widget {
+    order: 1;
+    justify-content: center;
+  }
+
+  .category-chips {
+    justify-content: center;
+  }
+}

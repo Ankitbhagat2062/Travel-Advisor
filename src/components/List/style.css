@@ -1,0 +1,149 @@
+.list-container {
+  padding: 16px;
+  background-color: #f8f9fa;
+}
+
+.list-title {
+  font-weight: 600 !important;
+  margin-bottom: 16px !important;
+  color: #333;
+}
+
+.place-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 12px !important;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.place-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.place-card.selected {
+  border: 2px solid #ff5252;
+  box-shadow: 0 4px 12px rgba(255, 82, 82, 0.3);
+}
+
+.place-image {
+  object-fit: cover;
+}
+
+.place-card-content {
+  padding: 12px !important;
+}
+
+.place-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.place-name {
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  color: #333;
+  flex: 1;
+  margin-right: 8px;
+}
+
+.place-category-icon {
+  color: #ff5252;
+  display: flex;
+  align-items: center;
+}
+
+.place-category-icon svg {
+  font-size: 20px;
+}
+
+.place-location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.location-icon {
+  color: #757575;
+  font-size: 16px;
+}
+
+.location-text {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.place-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.review-count {
+  color: #757575;
+}
+
+.cuisine {
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.price-chip {
+  font-size: 0.75rem !important;
+  height: 24px !important;
+}
+
+.price-chip .MuiChip-icon {
+  font-size: 14px !important;
+}
+
+.ranking {
+  display: block;
+  margin-top: 8px;
+  color: #888;
+}
+
+/* Skeleton Loading Styles */
+.skeleton-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.skeleton-image {
+  border-radius: 0 !important;
+}
+
+.skeleton-content {
+  padding: 12px;
+}
+
+/* Empty List State */
+.empty-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 24px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .list-container {
+    padding: 8px;
+  }
+  
+  .place-name {
+    font-size: 0.9rem !important;
+  }
+}

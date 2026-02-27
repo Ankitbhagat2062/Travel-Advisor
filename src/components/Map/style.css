@@ -1,0 +1,143 @@
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.map-container.fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999;
+  border-radius: 0;
+}
+
+.map-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 400px;
+  background-color: #f5f5f5;
+}
+
+.map-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 400px;
+  background-color: #f5f5f5;
+  color: #d32f2f;
+  text-align: center;
+  padding: 24px;
+}
+
+/* Map Controls */
+.map-controls {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+}
+
+.control-button {
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  width: 40px !important;
+  height: 40px !important;
+  transition: all 0.2s ease !important;
+}
+
+.control-button:hover {
+  background-color: #f5f5f5 !important;
+  transform: scale(1.05);
+}
+
+.control-button svg {
+  font-size: 20px;
+  color: #333;
+}
+
+/* Info Window Styles */
+.info-window {
+  padding: 8px;
+  max-width: 200px;
+}
+
+.info-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.info-rating {
+  color: #666;
+}
+
+/* Google Maps API Override Styles */
+.gm-style-iw {
+  padding: 12px !important;
+}
+
+.gm-style-iw-d {
+  overflow: hidden !important;
+}
+
+.gm-style-iw-tc::after {
+  background: #fff !important;
+}
+
+/* Marker Animation */
+@keyframes marker-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Custom Marker Styles */
+.custom-marker {
+  background-color: #ff5252;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.custom-marker:hover {
+  transform: scale(1.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .map-controls {
+    top: 8px;
+    right: 8px;
+  }
+
+  .control-button {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
