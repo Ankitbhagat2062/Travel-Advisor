@@ -16,12 +16,40 @@ export const getPlaceData = async ({ type, sw, ne }) => {
                 'x-rapidapi-host': 'travel-advisor.p.rapidapi.com'
             }
         });
-        console.log(data);
+        console.log(data)
         return data
     } catch (error) {
         console.error(error);
     }
 }
+
+export const getClimateData = async (lat, lng) => {
+    const API_KEY = 'fcfcd20f27e9e221b01dce820324dd6a'
+    const options = {
+        url: 'https://open-weather13.p.rapidapi.com/latlon',
+        params: {
+            latitude: lat,
+            longitude: lng,
+            lang: 'EN'
+        },
+        headers: {
+            'x-rapidapi-key': '64bc93994emsh7473d88f1f87767p198a6ajsn71e5e16c3386',
+            'x-rapidapi-host': 'open-weather13.p.rapidapi.com'
+        }
+    };
+
+    const url = `http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=${API_KEY}`
+    let resp;
+    try {
+         resp = await axios.request(options.url, options);
+        if(!resp.data) resp = await axios.get(url)
+        // console.log(resp.data)
+        return resp.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 export const data = [
 
     {

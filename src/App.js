@@ -5,7 +5,7 @@ import List from './components/List/List';
 import Map from './components/Map/Map';
 import { Grid, CssBaseline } from '@material-ui/core';
 import PlaceDetails from './components/PlaceDetails/PlaceDetails';
-import { getPlaceData } from './api';
+import { getClimateData, getPlaceData } from './api';
 
 function App() {
   const [places, setPlaces] = useState([]);
@@ -16,7 +16,7 @@ function App() {
   const [bounds, setBounds] = useState(null);
   const [loading, setLoading] = useState(false);
   const [childClicked, setChildClicked] = useState(null);
-
+const [weatherData, setWeatherData] = useState({})
   // Default coordinates (New York City)
   useEffect(() => {
     setCoordinates({ lat: 40.7128, lng: -74.0060 });
@@ -33,6 +33,11 @@ function App() {
               setPlaces(data);
               setFilteredPlaces(data);
               setChildClicked(null);
+              getClimateData(bounds.sw.lat, bounds.ne.lng).then((data) => {
+                if (data) {
+                 setWeatherData(data)
+                }
+              });
             }
             setLoading(false);
           })
@@ -72,7 +77,7 @@ function App() {
   return (
     <div className="App">
       <CssBaseline />
-      <Header
+      <Header data={weatherData}
         onTypeChange={handleTypeChange}
         currentType={type}
         setCoordinates={setCoordinates}

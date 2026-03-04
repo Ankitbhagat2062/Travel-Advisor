@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
 import { 
   Box, 
@@ -12,11 +12,8 @@ import {
   FullscreenExit as FullscreenExitIcon,
   ZoomIn as ZoomInIcon,
   ZoomOut as ZoomOutIcon,
-  // Restaurant as RestaurantIcon,
-  // Hotel as HotelIcon,
-  // Attractions as AttractionsIcon,
-  // LocationOn as MarkerIcon
 } from '@material-ui/icons';
+import LeafletMap from './LeafletMap';
 import './style.css';
 
 const Map = ({ 
@@ -25,11 +22,12 @@ const Map = ({
   setCoordinates, 
   onBoundsChange, 
   onMarkerClick,
-  selectedPlace
 }) => {
   const [map, setMap] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [infoWindowPlace, setInfoWindowPlace] = useState(null);
+  const [useLeaflet, setUseLeaflet] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Default center - NYC
   const defaultCenter = {
@@ -37,10 +35,29 @@ const Map = ({
     lng: coordinates?.lng || -74.0060
   };
 
+  // Check if we should use Google Maps
+  const shouldUseGoogleMaps = () => {
+    const useGoogleMaps = process.env.REACT_APP_USE_GOOGLE_MAPS === 'true';
+    const hasApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY && 
+                      process.env.REACT_APP_GOOGLE_MAPS_API_KEY.trim() !== '';
+    return useGoogleMaps && hasApiKey;
+  };
+
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || 'AIzaSyDvT1ecYHEiLMSPTgNtl5uwy8mQqWj_-mc',
-    // For development without API key, we'll use a fallback
+    googleMapsApiKey: shouldUseGoogleMaps() ? process.env.REACT_APP_GOOGLE_MAPS_API_KEY : '',
   });
+
+  // Determine if we should use Leaflet
+  useEffect(() => {
+    // Use Leaflet if:
+    // 1. Not configured to use Google Maps, OR
+    // 2. There's a load error, OR  
+    // 3. Google Maps failed to load
+    if (!shouldUseGoogleMaps() || loadError || !isLoaded) {
+      setUseLeaflet(true);
+    }
+    setLoading(false);
+  }, [loadError, isLoaded]);
 
   const mapContainerStyle = {
     width: '100%',
@@ -62,10 +79,10 @@ const Map = ({
     ]
   };
 
+  // Google Maps onLoad handler
   const onLoad = useCallback((map) => {
     setMap(map);
     
-    // Get bounds when map loads
     const bounds = new window.google.maps.LatLngBounds();
     if (places && places.length > 0) {
       places.forEach((place) => {
@@ -81,7 +98,6 @@ const Map = ({
       }
     }
     
-    // Initial bounds for fetching data
     const listener = map.addListener('idle', () => {
       const bounds = map.getBounds();
       if (bounds) {
@@ -142,14 +158,14 @@ const Map = ({
 
   const getMarkerIcon = (place) => {
     const category = place.category?.key || place.ranking_category || '';
-    let fillColor = '#ff5252'; // default red
+    let fillColor = '#ff5252';
     
     if (category.includes('restaurant')) {
-      fillColor = '#ff9800'; // orange
+      fillColor = '#ff9800';
     } else if (category.includes('hotel')) {
-      fillColor = '#2196f3'; // blue
+      fillColor = '#2196f3';
     } else {
-      fillColor = '#4caf50'; // green
+      fillColor = '#4caf50';
     }
 
     return {
@@ -167,17 +183,49 @@ const Map = ({
     setInfoWindowPlace(place);
   };
 
-  if (loadError) {
+  // Show loading while determining which map to use
+  if (loading) {
     return (
-      <Box className="map-error">
-        <Typography variant="h6">Error loading maps</Typography>
-        <Typography variant="body2">
-          Please check your Google Maps API key configuration.
+      <Box className="map-loading">
+        <CircularProgress />
+        <Typography variant="body2" style={{ marginTop: 8 }}>
+          Loading map...
         </Typography>
       </Box>
     );
   }
 
+  // Render Leaflet when no API key or error
+  if (useLeaflet) {
+    return (
+      <LeafletMap
+        places={places}
+        coordinates={coordinates}
+        setCoordinates={setCoordinates}
+        onBoundsChange={onBoundsChange}
+        onMarkerClick={onMarkerClick}
+        isFullscreen={isFullscreen}
+        toggleFullscreen={toggleFullscreen}
+        handleZoomIn={handleZoomIn}
+        handleZoomOut={handleZoomOut}
+        handleCenterOnUser={handleCenterOnUser}
+      />
+    );
+  }
+
+  // Render error state for Google Maps
+  if (loadError) {
+    return (
+      <Box className="map-error">
+        <Typography variant="h6">Error loading Google Maps</Typography>
+        <Typography variant="body2">
+          Please check your Maps API key configuration.
+        </Typography>
+      </Box>
+    );
+  }
+
+  // Render loading state for Google Maps
   if (!isLoaded) {
     return (
       <Box className="map-loading">
@@ -189,6 +237,7 @@ const Map = ({
     );
   }
 
+  // Original Google Maps render
   return (
     <Box className={`map-container ${isFullscreen ? 'fullscreen' : ''}`}>
       <GoogleMap
